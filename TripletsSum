@@ -1,0 +1,140 @@
+// Java program to print all combination of size 
+// r in an array of size n 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays; 
+public class Permutation { 
+	/* arr[] ---> Input Array 
+	data[] ---> Temporary array to store current combination 
+	start & end ---> Staring and Ending indexes in arr[] 
+	index ---> Current index in data[] 
+	r ---> Size of a combination to be printed */
+	
+	
+	
+	static ArrayList<int[]> combinationUtil(int arr[], int n, int r, 
+						int index, int data[], int i, int[] indeces, ArrayList<int[]> buffer) 
+	{ 
+		// Current combination is ready to be printed, 
+		// print it 
+		
+		//BACKUP
+		
+		/*
+		 * if (index == r) {
+		 * 
+		 * int[] buffer = new int[3];
+		 * 
+		 * for (int j = 0; j < r; j++) {
+		 * 
+		 * System.out.print(data[j] +"a"+indeces[j]+" ");
+		 * 
+		 * 
+		 * }
+		 * 
+		 * System.out.println(""); return; }
+		 */
+		
+		
+		if (index == r) {
+			
+			//int[] buffer = new int[3];
+			 
+			int sum = 0;
+			
+			for (int j = 0; j < r; j++) {
+				
+				//System.out.print(data[j] +" "+indeces[j]+" ");
+				
+				sum = sum + data[j];
+					
+			}
+			
+			int total = 0;
+			
+			if(sum%data[0]==0 || sum%data[1]==0 || sum%data[2]==0) {
+				
+				if(!((sum%data[0]==0 && sum%data[1]==0)||(sum%data[0]==0 && sum%data[2]==0)||(sum%data[1]==0 && sum%data[2]==0))) {
+					
+					for (int j = 0; j < r; j++) {
+						
+						System.out.print(indeces[j]+" ");
+							total++;
+					}
+					
+					
+					System.out.println(total);
+					
+					buffer.add(indeces) ;
+					
+				}
+			}
+				 
+			System.out.println(""); 
+			return null; 
+		} 
+		
+		
+		
+		
+		// When no more elements are there to put in data[] 
+		if (i >= n) 
+			return null; 
+		// current is included, put next at next 
+		// location 
+		
+		data[index] = arr[i];
+		indeces[index] = i+1;
+		combinationUtil(arr, n, 3, index + 1, 
+							data, i + 1,indeces, buffer); 
+		
+		// current is excluded, replace it with 
+		// next (Note that i+1 is passed, but 
+		// index is not changed) 
+		combinationUtil(arr, n, 3, index, data, i + 1, indeces, buffer); 
+		
+		return buffer;
+		
+	} 
+	
+	
+	
+	
+	// The main function that prints all combinations 
+	// of size r in arr[] of size n. This function 
+	// mainly uses combinationUtil() 
+	static void printCombination(int arr[], int n, int r, int[] indeces, ArrayList<int[]> buffer) 
+	{ 
+		// A temporary array to store all combination 
+		// one by one 
+		int data[] = new int[r]; 
+		// Print all combination using temprary 
+		// array 'data[]' 
+		ArrayList<int[]> triplets = combinationUtil(arr, n, 3, 0, data, 0, indeces, buffer);
+		
+		System.out.println(triplets.size());
+		
+		triplets.forEach((triplet) -> {
+			for (int is : triplet) {
+				System.out.print(is+" ");
+			}
+		});
+	} 
+	
+	
+	
+	
+	
+	/* Driver function to check for above function */
+	public static void main(String[] args) 
+	{ 
+	//	int arr[] = { 1,2,3,4,5,6,7,8,9 };
+		int arr[] = { 1,2,2,1 };
+		int r = 3; 
+		int n = arr.length; 
+		int indeces[] = new int[3];
+		ArrayList<int[]> buffer = new ArrayList<>();
+		printCombination(arr, n, 3, indeces, buffer); 
+	} 
+} 
+/* This code is contributed by Devesh Agrawal */
