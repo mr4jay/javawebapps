@@ -1,0 +1,92 @@
+import java.util.TreeSet;
+
+public class HeavyNode {
+	
+	
+	static class Node {
+	    int value;
+	    int splNumber;
+	    Node left;
+	    Node right;
+	 
+	    Node(int value) {
+	        this.value = value;
+	        right = null;
+	        left = null;
+	    }
+	}
+	
+//---------------------------------------------------------------------------------------------------------------------	
+	Node root;
+	
+	private Node addRecursive(Node current, int value) {
+	    if (current == null) {
+	        return new Node(value);
+	    }
+	 
+	    if (value < current.value) {
+	        current.left = addRecursive(current.left, value);
+	    } else if (value > current.value) {
+	        current.right = addRecursive(current.right, value);
+	    } else {
+	        // value already exists
+	        return current;
+	    }
+	 
+	    return current;
+	}
+	
+	public void add(int value) {
+	    root = addRecursive(root, value);
+	}
+	
+//---------------------------------------------------------------------------------------------------------------------	
+	
+	
+	// Function to check sum of divisors divisible by 3 
+		// of N which are divisible by K 
+		// countDivisors(n)
+		 static int countDivisors(int n) 
+		{ 
+		    // Variable to store 
+		    // count of divisors 
+		    int  i, sum=0; 
+		    int[] arr = new int[n];
+		  
+		    // Traverse from 1 to n 
+		    for (i = 1; i <= n; i++) { 
+		  
+		        // increase the count if both 
+		        // the conditions are satisfied 
+		        if (n % i == 0) { 
+		        	sum = sum + i;
+		        } 
+		          
+		    } 
+		    
+		    if(sum%3==0) {
+		    	return n;
+		    }
+		   
+		    return -1; 
+		} 
+		 
+		 
+
+//---------------------------------------------------------------------------------------------------------------------	
+		 
+		 
+	public static void main(String []args ) {
+		
+		HeavyNode heavyNode = new HeavyNode();
+		
+		Node node = new Node(1);
+		node.left = new Node(2);
+		node.right = new Node(3);
+		
+		
+		
+		
+	}
+
+}
