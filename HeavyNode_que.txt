@@ -1,0 +1,27 @@
+You are given a tree with N nodes rooted at 1. Each of the N nodes have some special number S, related to It. Each Node also has
+certain Power Power of each node of the tree is defined as the number of heavy nodes in the subtree of the node (including that node). A
+heavy node is a node whose sum of divisors of its special number is a multiple of 3. You are given Q queries.
+There are two types of queries:
+Type 1: Update special number of node.
+Type 2: Tell the power of a certain node.
+
+INPUT FORMAT:
+
+First line: Two space separated integers N and Q denoting number of nodes in the tree and number of queries respectively.
+Each of the next N - 1 lines: Two space separated integers U and V denoting there is an edge between them.
+Next line: N space separated integers, i of which denotes the special number related to node i.
+First integer in next Q lines is T (the type of query.
+if T is 1, it is followed by 2 integers X and Y denoting special number of node X is to be updated to Y
+If T is 2, it is followed by single integer X.
+
+OUTPUT FORMAT:
+
+For each query of type 2 output the power of the given node X
+Answer for each query should come in a new line
+
+EXPLANATION:
+
+Out of Special Numbers 16, 8, 17,3 and 18 only 8,17 and 18 have sum of divisors divisible by 3
+So subtree of node 1 has 3 heavy nodes and hence power is 3 and subtree of node 3 has 2 heavy nodes and hence power is 2
+When we update special number of node 3 from 17 to 7 (sum of divisors of 7 which is 1+7 8 is not multiple of 3)
+We get answer for same queries as 2 and 1 as 1 heavy node has decreased in number from both subtrees.
