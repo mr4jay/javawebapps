@@ -1,0 +1,111 @@
+import java.io.*;
+import java.util.*; 
+public class TestClass {
+	public static void main(String[] args) throws IOException {
+
+		ArrayList<Integer> arr = new ArrayList<Integer>(); 
+
+		int index = 0;
+		int[] array = new int[100];
+
+		for(int i=1;i<=100;i++) {
+			array[index]=i;
+			arr.add(i);
+			index++;
+		}
+
+
+		int r = 3; 
+		int n = arr.size();
+		int indeces[] = new int[3];
+		ArrayList<int[]> buffer = new ArrayList<>();
+
+		for(int i:arr) {
+			//System.out.print(i+" ");
+		}
+
+
+		System.out.println(good_triplets(arr, n));
+
+		//printCombination(array, n, 3, indeces, buffer);
+
+	}
+
+
+	static long good_triplets(ArrayList<Integer> arr, int n){
+
+		// Write your code here
+		int index = 0;
+		int[] array = new int[arr.size()];
+
+		for(int i:arr) {
+			array[index]=i;
+			index++;
+			
+		}
+		
+		int r = 3; 
+		int indeces[] = new int[3];
+		ArrayList<int[]> buffer = new ArrayList<>();
+		
+		long l = printCombination(array, array.length, 3, indeces, buffer);
+
+		return l;
+
+
+	}
+
+	static List<int[]> combinationUtil(int arr[], int n, int r, 
+			int index, int data[], int i, int[] indeces, List<int[]> buffer) 
+	{ 
+
+
+		if (index == r) {
+
+			int sum = 0;
+
+			for (int j = 0; j < r; j++) {
+				sum = sum + data[j];
+
+			}
+
+			if(sum%data[0]==0 || sum%data[1]==0 || sum%data[2]==0) {
+
+				if(!((sum%data[0]==0 && sum%data[1]==0)||(sum%data[0]==0 && sum%data[2]==0)||(sum%data[1]==0 && sum%data[2]==0))) {
+
+					buffer.add(indeces) ;
+				}
+			}
+
+			return buffer; 
+		} 
+
+
+		if (i >= n) 
+			return buffer; 
+
+		data[index] = arr[i];
+		indeces[index] = i+1;
+		combinationUtil(arr, n, 3, index + 1, 
+				data, i + 1,indeces, buffer); 
+
+		combinationUtil(arr, n, 3, index, data, i + 1, indeces, buffer); 
+
+		return buffer;
+
+	} 
+
+
+	static long printCombination(int arr[], int n, int r, int[] indeces, ArrayList<int[]> buffer) 
+	{ 
+
+		int data[] = new int[r]; 
+		List<int[]> triplets = combinationUtil(arr, n, 3, 0, data, 0, indeces, buffer);
+
+		//System.out.println(triplets.size()*6);
+		
+		return triplets.size()*6;
+
+
+	} 
+}
