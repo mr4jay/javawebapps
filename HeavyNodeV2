@@ -1,0 +1,227 @@
+import java.io.*;
+import java.util.*;
+import java.lang.reflect.Array;
+ 
+ public class TestClass {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        PrintWriter wr = new PrintWriter(System.out);
+        String[] temp= br.readLine().split(" ");
+        int N = Integer.parseInt(temp[0]) ;
+        int Q = Integer.parseInt(temp[1]) ;
+        int U[] = new int[N-1] ; 
+        int V[] = new int[N-1] ; 
+        for(int i=0;i<N-1;i++)
+        {
+            temp = br.readLine().split(" ");
+            U[i] = Integer.parseInt(temp[0]) ;
+		    V[i] = Integer.parseInt(temp[1]) ;
+		}
+	    int[] Val = new int[N];
+	    temp = br.readLine().split(" ");
+        for(int i_Val=0;i_Val<N;i_Val++)
+        {
+        	Val[i_Val] = Integer.parseInt(temp[i_Val]) ; 
+        }
+        int[] Type = new int[Q] ;
+        int[] X = new int[Q] ; 
+        int[] Y = new int[Q] ;
+        int tot = 0 ; 
+        for(int i_Type=0;i_Type<Q;i_Type++)
+        {
+            temp = br.readLine().split(" ");
+            Type[i_Type] = Integer.parseInt(temp[0]);
+            X[i_Type] = Integer.parseInt(temp[1]);
+            if(Type[i_Type]==1) 
+        	{   
+        	    Y[tot++] = Integer.parseInt(temp[2]); ; 
+        	}
+        }
+        int[] out_ = solve(Val, N, Q, U, V, Y, X, Type,tot);
+        for(int i_out_=0; i_out_<out_.length; i_out_++)
+        {
+            System.out.println(out_[i_out_]);
+        }
+        
+        wr.close();
+        br.close();
+    }
+//N is the total nodes of the tree.
+//Q is total number of queries.
+//Array U and V denotes there is an edge between U[i] and V[i].
+//Val denotes special number related to nodes.Val[i] is the special number related to node i.
+/* Type denotes the type of the queries.If Type[i]=1,then i(th) query is of type 1.If Type[i]=2,
+   then i(th) query is of type 2.
+   If i(th) query is of type 1,then X[i] denotes the node whose special number is to be 
+   updated to Y[k](0-based indexing),where k is the total number of queries of type 1 that came before i(th) 
+   query.
+   If i(th) query is of type 2,then X[i] denotes the node whose power you have to find.
+   Ylen is the total number of type 1 queries.
+*/
+    
+	/*
+5 5
+1 2
+1 3
+3 4
+3 5
+16 8 17 3 18
+2 1
+2 3
+1 3 7
+2 1
+2 3
+	*/   
+    
+    Map<Integer, int[]> map = new HashMap<Integer,int[]>();
+    static int count = 0;
+    
+    static int[] solve(int[] Val, int N, int Q, int[] U, int[] V, int[] Y, int[] X, int[] Type,int Ylen){
+        int ans[] = new int[Q-Ylen] ;
+        //write your code here
+        
+        int index = 0;
+        
+        TestClass class1 = new TestClass();
+        
+        int[] mappedArray = {0,0,0};
+        ArrayList<Integer> arrayList = new ArrayList<Integer>();
+        
+        for(int i = 1 ; i <= Q; i++) {
+        	int[] dummy = new int[3]; 
+        	class1.map.put(i, dummy);
+        }
+        
+        for(int i = 0;i < U.length ; i++) {
+        	
+        	int[] values = new int[3];
+        	
+        	values[0] = V[i];
+        	
+        	if(U[i]==U[i+1]) {
+        		values[1] = V[i+1];
+        		i++;
+        	}
+        	
+        	class1.map.put(U[i], values);
+        }
+        
+        
+        for(int i=0 ;i < Val.length ; i++) {
+        	mappedArray  = class1.map.get(i+1);
+        	mappedArray[2] = countDivisors(Val[i]);
+        	class1.map.put(i+1, mappedArray);
+        	
+        }
+        
+        //printMap(class1.map, Val.length);
+        //System.out.println("");
+        
+        for(int i=0;i < Q;i++) {
+        	
+        	//System.out.println(X[i]+" "+Y[i]);
+        	
+        	if(Type[i]==1) {
+        		
+        		updatespecialNumber(X[i],Y[index],class1.map);
+        		
+        	}
+        	
+
+        	if(Type[i]==2) {
+        		
+        		arrayList.add(nodePower(class1.map, X[i]));
+        		//System.out.println(nodePower(class1.map, X[i]));
+        		count = 0;
+        	}
+        	
+        	
+        }
+        
+        
+       // printMap(class1.map, Val.length);
+        
+        for(int i = 0 ; i<ans.length; i++) {
+        	ans[i] = arrayList.get(i);
+        }
+        
+        return ans ; 
+    
+    }
+       
+    private static void updatespecialNumber(int xi,int yi,Map<Integer, int[]> map) {
+		// TODO Auto-generated method stub
+    	int[] array = map.get(xi);
+    	array[2] = countDivisors(yi);
+    	map.put(xi, array);
+    	
+	}
+    
+    private static int nodePower(Map<Integer, int[]> map,int node) {
+    	
+    	
+    	if(map.containsKey(node)) {
+    		
+    		count = count + map.get(node)[2];
+    		
+    		if(map.get(node)[0]!=0) {
+    			nodePower(map, map.get(node)[0]);
+    		}
+    		
+    		if(map.get(node)[1]!=0) {
+    			nodePower(map, map.get(node)[1]);
+    		}
+    		
+    		
+    		
+    	}
+    	
+		return count;
+    	
+    }
+    
+    
+
+	// Function to check sum of divisors divisible by 3 
+ 		
+ 		 static int countDivisors(int n) 
+ 		{ 
+ 		    // Variable to store 
+ 		    // count of divisors 
+ 		    int  i, sum=0; 
+ 		    int[] arr = new int[n];
+ 		  
+ 		    // Traverse from 1 to n 
+ 		    for (i = 1; i <= n; i++) { 
+ 		  
+ 		        // increase the count if both 
+ 		        // the conditions are satisfied 
+ 		        if (n % i == 0) { 
+ 		        	sum = sum + i;
+ 		        } 
+ 		          
+ 		    } 
+ 		    
+ 		    if(sum%3==0) {
+ 		    	return 1;
+ 		    }
+ 		   
+ 		    return 0; 
+ 		} 
+ 		 
+ 		 
+ 		 static void printMap(Map<Integer, int[]> map,int Val) {
+ 			 
+ 			for(int i=0 ;i < Val ; i++) {
+ 	        	
+ 	        	for(int j:map.get(i+1)) {
+ 	            	System.out.print(j);
+ 	            	
+ 	            }
+ 	        	System.out.println("");
+ 	        }
+ 			 
+ 		 }
+ 		 
+}
+
