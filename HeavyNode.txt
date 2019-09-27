@@ -42,7 +42,7 @@ import java.lang.reflect.Array;
         {
             System.out.println(out_[i_out_]);
         }
- 
+        
         wr.close();
         br.close();
     }
@@ -74,16 +74,21 @@ import java.lang.reflect.Array;
 	*/   
     
     Map<Integer, int[]> map = new HashMap<Integer,int[]>();
+    static int count = 0;
     
     static int[] solve(int[] Val, int N, int Q, int[] U, int[] V, int[] Y, int[] X, int[] Type,int Ylen){
         int ans[] = new int[Q-Ylen] ;
         //write your code here
         
+        int index = 0;
+        
         TestClass class1 = new TestClass();
         
-        int[] mappedArray = {0,0,0}, dummy = {0,0,0};
+        int[] mappedArray = {0,0,0};
+        ArrayList<Integer> arrayList = new ArrayList<Integer>();
         
         for(int i = 1 ; i <= Q; i++) {
+        	int[] dummy = new int[3]; 
         	class1.map.put(i, dummy);
         }
         
@@ -101,27 +106,83 @@ import java.lang.reflect.Array;
         	class1.map.put(U[i], values);
         }
         
+        
         for(int i=0 ;i < Val.length ; i++) {
         	mappedArray  = class1.map.get(i+1);
         	mappedArray[2] = countDivisors(Val[i]);
         	class1.map.put(i+1, mappedArray);
         	
-        	for(int j:class1.map.get(i+1)) {
-            	System.out.print(j);
-            	
-            }
-        	System.out.println("");
+        }
+        
+        //printMap(class1.map, Val.length);
+        //System.out.println("");
+        
+        for(int i=0;i < Q;i++) {
+        	
+        	//System.out.println(X[i]+" "+Y[i]);
+        	
+        	if(Type[i]==1) {
+        		
+        		updatespecialNumber(X[i],Y[index],class1.map);
+        		
+        	}
+        	
+
+        	if(Type[i]==2) {
+        		
+        		arrayList.add(nodePower(class1.map, X[i]));
+        		//System.out.println(nodePower(class1.map, X[i]));
+        		count = 0;
+        	}
+        	
+        	
         }
         
         
+       // printMap(class1.map, Val.length);
         
-       
+        for(int i = 0 ; i<ans.length; i++) {
+        	ans[i] = arrayList.get(i);
+        }
         
         return ans ; 
     
     }
        
-    // Function to check sum of divisors divisible by 3 
+    private static void updatespecialNumber(int xi,int yi,Map<Integer, int[]> map) {
+		// TODO Auto-generated method stub
+    	int[] array = map.get(xi);
+    	array[2] = countDivisors(yi);
+    	map.put(xi, array);
+    	
+	}
+    
+    private static int nodePower(Map<Integer, int[]> map,int node) {
+    	
+    	
+    	if(map.containsKey(node)) {
+    		
+    		count = count + map.get(node)[2];
+    		
+    		if(map.get(node)[0]!=0) {
+    			nodePower(map, map.get(node)[0]);
+    		}
+    		
+    		if(map.get(node)[1]!=0) {
+    			nodePower(map, map.get(node)[1]);
+    		}
+    		
+    		
+    		
+    	}
+    	
+		return count;
+    	
+    }
+    
+    
+
+	// Function to check sum of divisors divisible by 3 
  		
  		 static int countDivisors(int n) 
  		{ 
@@ -147,6 +208,20 @@ import java.lang.reflect.Array;
  		   
  		    return 0; 
  		} 
+ 		 
+ 		 
+ 		 static void printMap(Map<Integer, int[]> map,int Val) {
+ 			 
+ 			for(int i=0 ;i < Val ; i++) {
+ 	        	
+ 	        	for(int j:map.get(i+1)) {
+ 	            	System.out.print(j);
+ 	            	
+ 	            }
+ 	        	System.out.println("");
+ 	        }
+ 			 
+ 		 }
  		 
 }
 
