@@ -1,0 +1,110 @@
+// Java program to print all combination of size r in an array of size n 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List; 
+public class TripleSum2 { 
+	/* arr[] ---> Input Array 
+	data[] ---> Temporary array to store current combination 
+	start & end ---> Staring and Ending indexes in arr[] 
+	index ---> Current index in data[] 
+	r ---> Size of a combination to be printed */
+	static  List<int[]> combinationUtil(int arr[], int data[], int start, 
+								int end, int index, int r, int[] indeces, List<int[]> buffer) 
+	{ 
+		// Current combination is ready to be printed, print it 
+		if (index == r) 
+		{ 
+			
+			int sum = 0;
+			
+			for (int j = 0; j < r; j++) {
+				sum = sum + data[j];
+				
+			}
+			
+			if(sum%data[0]==0 || sum%data[1]==0 || sum%data[2]==0) {
+				
+				if(!((sum%data[0]==0 && sum%data[1]==0)||(sum%data[0]==0 && sum%data[2]==0)||(sum%data[1]==0 && sum%data[2]==0))) {
+					
+					buffer.add(indeces) ;
+				}
+			}
+			
+			return buffer; 
+			
+			
+		} 
+		// replace index with all possible elements. The condition 
+		// "end-i+1 >= r-index" makes sure that including one element 
+		// at index will make a combination with remaining elements 
+		// at remaining positions 
+		for (int i=start; i<=end && end-i+1 >= r-index; i++) 
+		{ 
+			data[index] = arr[i]; 
+			combinationUtil(arr, data, i+1, end, index+1, r,indeces,buffer); 
+		} 
+		
+		return buffer;
+	} 
+	// The main function that prints all combinations of size r 
+	// in arr[] of size n. This function mainly uses combinationUtil() 
+	static long printCombination(int arr[], int n, int r, int[] indeces, ArrayList<int[]> buffer)
+	{ 
+		// A temporary array to store all combination one by one 
+		int data[]=new int[r]; 
+		// Print all combination using temprary array 'data[]' 
+		List<int[]> triplets = combinationUtil(arr, data, 0, n-1, 0, r,indeces, buffer); 
+		
+		System.out.println(triplets.size()*6);
+		return triplets.size()*6;
+	} 
+	
+	static long good_triplets(ArrayList<Integer> arr, int n){
+
+		// Write your code here
+		int index = 0;
+		//int[] array = new int[arr.size()];
+		int[] array = {1,2,2,1};
+		/*
+		 * for(int i:arr) { array[index]=i; index++;
+		 * 
+		 * }
+		 */
+		int r = 3; 
+		int indeces[] = new int[3];
+		ArrayList<int[]> buffer = new ArrayList<>();
+		
+		long l = printCombination(array, array.length, 3, indeces, buffer);
+
+		return l;
+
+
+	}
+	
+/*
+ * input	
+	4
+	1
+	2
+	2
+	1
+*/	
+	
+	/*Driver function to check for above function*/
+	
+	    public static void main(String[] args) throws IOException {
+	         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	         int n = Integer.parseInt(br.readLine().trim());
+	         ArrayList<Integer> arr = new ArrayList<Integer>(n);
+	         for(int i_arr=0; i_arr<n; i_arr++)
+	         {
+	             String str = br.readLine();
+	             arr.add(Integer.parseInt(str));
+	         }
+	         long out_ = good_triplets(arr, n);
+	         System.out.println(out_);
+	        // wr.close();
+	         br.close();
+	    }
+	
+} 
