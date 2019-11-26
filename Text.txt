@@ -69,6 +69,6 @@ System Login issues
 
 System booting issues
 
-System logs 
+https://www.hackerearth.com/challenges/hiring/juspay-functional-programming-hiring-challenge/
 
 Network connectivity issues
