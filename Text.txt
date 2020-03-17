@@ -9,3 +9,4 @@ https://www.hackerearth.com/challenges/hiring/juspay-functional-programming-hiri
 https://www.hackerearth.com/challenges/hiring/thoughtclan-fullstack-hiring-2019/problems/60ec04051ba64a729a92ca3d86bbcbbb/
 
 https://www.kaggle.com/capboy/thoughtclan
+https://www.hackerearth.com/challenges/hiring/hcl-ml-hiring-2020/problems/9c71a5552c0d4cc1b462711207a061ff/
